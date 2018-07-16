@@ -23,6 +23,7 @@ import android.preference.PreferenceManager;
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.dao.InstancesDao;
+import org.odk.collect.android.http.HttpHeadResponse;
 import org.odk.collect.android.http.injection.DaggerHttpComponent;
 import org.odk.collect.android.http.HttpInterface;
 import org.odk.collect.android.logic.PropertyManager;
@@ -185,8 +186,9 @@ public class InstanceServerUploader extends InstanceUploader {
             }
 
             try {
-                Map<String, String> responseHeaders = new HashMap<>();
-                int statusCode = httpInterface.httpHeadRequest(uri, responseHeaders);
+                HttpHeadResponse response = httpInterface.head(uri);
+                int statusCode = response.getStatusCode();
+                Map<String, String> responseHeaders = response.getHeaders();
 
                 if (statusCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
                     outcome.authRequestingServer = submissionUri;

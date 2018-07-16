@@ -228,8 +228,7 @@ public class HttpClientConnection implements HttpInterface {
     }
 
 
-    @Override
-    public int httpHeadRequest(@NonNull URI uri, @NonNull Map<String, String> responseHeaders) throws Exception {
+    public HttpHeadResponse head(@NonNull URI uri) throws Exception {
         HttpContext localContext = getHttpContext();
         HttpClient httpclient = createHttpClient(CONNECTION_TIMEOUT);
         HttpHead httpHead = createOpenRosaHttpHead(uri);
@@ -241,6 +240,7 @@ public class HttpClientConnection implements HttpInterface {
 
         final HttpResponse response;
         int statusCode;
+        Map<String, String> responseHeaders = new HashMap<>();
 
         try {
             Timber.i("Issuing HEAD request to: %s", uri.toString());
@@ -284,7 +284,7 @@ public class HttpClientConnection implements HttpInterface {
             throw new Exception("Generic Exception: " + msg);
         }
 
-        return statusCode;
+        return new HttpHeadResponse(responseHeaders, statusCode);
     }
 
     @Override

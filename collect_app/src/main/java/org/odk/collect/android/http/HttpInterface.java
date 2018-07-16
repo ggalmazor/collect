@@ -44,11 +44,10 @@ public interface HttpInterface {
      * Performs a HTTP Head request.
      *
      * @param uri of which to perform a HTTP head
-     * @param responseHeaders Map which is populated with the HTTP Headers
      * @return HTTP status code
      * @throws Exception a multitude of Exceptions such as IOException can be thrown
      */
-    int httpHeadRequest(@NonNull URI uri, @NonNull Map<String, String> responseHeaders) throws Exception;
+    HttpHeadResponse head(@NonNull URI uri) throws Exception;
 
     /**
      * Uploads files to a Server.

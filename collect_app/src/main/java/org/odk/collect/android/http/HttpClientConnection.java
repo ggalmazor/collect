@@ -148,7 +148,7 @@ public class HttpClientConnection implements HttpInterface {
 
     @Override
     public @NonNull
-    HttpInputStreamResult getHttpInputStream(@NonNull URI uri, @Nullable final String contentType) throws Exception {
+    HttpGetResponse getHttpInputStream(@NonNull URI uri, @Nullable final String contentType) throws Exception {
         HttpContext localContext = getHttpContext();
         HttpClient httpclient = createHttpClient(CONNECTION_TIMEOUT);
 
@@ -224,7 +224,7 @@ public class HttpClientConnection implements HttpInterface {
             }
         }
 
-        return new HttpInputStreamResult(downloadStream, responseHeaders, hash, statusCode);
+        return new HttpGetResponse(downloadStream, responseHeaders, hash, statusCode);
     }
 
 

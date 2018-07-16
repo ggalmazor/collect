@@ -34,11 +34,11 @@ public interface HttpInterface {
      *
      * @param uri of the stream
      * @param contentType check the returned Mime Type to ensure it matches. "text/xml" causes a Hash to be calculated
-     * @return HttpInputStreamResult - An object containing the Stream, Hash and Headers
+     * @return HttpGetResponse - An object containing the Stream, Hash and Headers
      * @throws Exception a multitude of Exceptions such as IOException can be thrown
      */
     @NonNull
-    HttpInputStreamResult getHttpInputStream(@NonNull URI uri, @Nullable String contentType) throws Exception;
+    HttpGetResponse getHttpInputStream(@NonNull URI uri, @Nullable String contentType) throws Exception;
 
     /**
      * Performs a HTTP Head request.

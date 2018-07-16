@@ -92,7 +92,7 @@ public class CollectServerClient {
         // parse response
         Document doc;
 
-        HttpInputStreamResult inputStreamResult;
+        HttpGetResponse inputStreamResult;
         try {
             inputStreamResult = getHttpInputStream(urlString, HTTP_CONTENT_TYPE_TEXT_XML);
 
@@ -149,11 +149,11 @@ public class CollectServerClient {
      *
      * @param downloadUrl uri of the stream
      * @param contentType check the returned Mime Type to ensure it matches. "text/xml" causes a Hash to be calculated
-     * @return HttpInputStreamResult - An object containing the Stream, Hash and Headers
+     * @return HttpGetResponse - An object containing the Stream, Hash and Headers
      * @throws Exception - Can throw a multitude of Exceptions, such as MalformedURLException or IOException
      */
     public @NonNull
-    HttpInputStreamResult getHttpInputStream(@NonNull String downloadUrl, @Nullable final String contentType) throws Exception {
+    HttpGetResponse getHttpInputStream(@NonNull String downloadUrl, @Nullable final String contentType) throws Exception {
         URI uri;
         try {
             // assume the downloadUrl is escaped properly

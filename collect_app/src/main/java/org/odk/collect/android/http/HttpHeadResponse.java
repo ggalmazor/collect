@@ -16,6 +16,11 @@
 
 package org.odk.collect.android.http;
 
+import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
+import static javax.net.ssl.HttpsURLConnection.HTTP_MULT_CHOICE;
+import static javax.net.ssl.HttpsURLConnection.HTTP_OK;
+import static org.opendatakit.httpclientandroidlib.HttpStatus.SC_UNAUTHORIZED;
+
 import android.support.annotation.NonNull;
 import java.util.Map;
 
@@ -35,5 +40,21 @@ public class HttpHeadResponse {
 
     public Map<String, String> getHeaders() {
         return headers;
+    }
+
+    public boolean isUnauthorized() {
+        return statusCode == SC_UNAUTHORIZED;
+    }
+
+    public boolean isNoContent() {
+        return statusCode == HTTP_NO_CONTENT;
+    }
+
+    /**
+     * Returns true if the status code is in the range of what's considered a
+     * successful response (2xx). False otherwise.
+     */
+    public boolean isSuccess() {
+        return statusCode >= HTTP_OK && statusCode < HTTP_MULT_CHOICE;
     }
 }

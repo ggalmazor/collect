@@ -187,13 +187,12 @@ public class InstanceServerUploader extends InstanceUploader {
 
             try {
                 HttpHeadResponse response = httpInterface.head(uri);
-                int statusCode = response.getStatusCode();
                 Map<String, String> responseHeaders = response.getHeaders();
 
-                if (statusCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
+                if (response.isUnauthorized()) {
                     outcome.authRequestingServer = submissionUri;
                     return false;
-                } else if (statusCode == HttpsURLConnection.HTTP_NO_CONTENT) {
+                } else if (response.isNoContent()) {
                     if (responseHeaders.containsKey("Location")) {
                         try {
                             Uri newURI = Uri.parse(URLDecoder.decode(responseHeaders.get("Location"), "utf-8"));
@@ -236,8 +235,8 @@ public class InstanceServerUploader extends InstanceUploader {
                     }
 
                 } else {
-                    Timber.w("Status code on Head request: %d", statusCode);
-                    if (statusCode >= HttpsURLConnection.HTTP_OK && statusCode < HttpsURLConnection.HTTP_MULT_CHOICE) {
+                    Timber.w("Status code on Head request: %d", response.getStatusCode());
+                    if (response.isSuccess()) {
                         outcome.messagesByInstanceId.put(
                                 id,
                                 FAIL

@@ -148,7 +148,7 @@ public class HttpClientConnection implements HttpInterface {
 
     @Override
     public @NonNull
-    HttpGetResponse get(@NonNull URI uri, @Nullable final String contentType) throws Exception {
+    HttpGetResponse get(@NonNull URI uri, @Nullable final String expectedContentType) throws Exception {
         HttpContext localContext = getHttpContext();
         HttpClient httpclient = createHttpClient(CONNECTION_TIMEOUT);
 
@@ -185,14 +185,14 @@ public class HttpClientConnection implements HttpInterface {
             throw new Exception("No entity body returned from: " + uri.toString());
         }
 
-        if (contentType != null && contentType.length() > 0) {
-            if (!entity.getContentType().getValue().toLowerCase(Locale.ENGLISH).contains(contentType)) {
+        if (expectedContentType != null && expectedContentType.length() > 0) {
+            if (!entity.getContentType().getValue().toLowerCase(Locale.ENGLISH).contains(expectedContentType)) {
                 discardEntityBytes(response);
                 String error = "ContentType: "
                         + entity.getContentType().getValue()
                         + " returned from: "
                         + uri.toString()
-                        + " is not " + contentType + ".  This is often caused by a network proxy.  Do you need "
+                        + " is not " + expectedContentType + ".  This is often caused by a network proxy.  Do you need "
                         + "to login to your network?";
 
                 throw new Exception(error);
@@ -203,7 +203,7 @@ public class HttpClientConnection implements HttpInterface {
 
         String hash = "";
 
-        if (HTTP_CONTENT_TYPE_TEXT_XML.equals(contentType)) {
+        if (HTTP_CONTENT_TYPE_TEXT_XML.equals(expectedContentType)) {
             byte[] bytes = IOUtils.toByteArray(downloadStream);
             downloadStream = new ByteArrayInputStream(bytes);
             hash = FileUtils.getMd5Hash(new ByteArrayInputStream(bytes));

@@ -33,12 +33,12 @@ public interface HttpInterface {
      * Creates a http connection and sets up an input stream.
      *
      * @param uri of the stream
-     * @param contentType check the returned Mime Type to ensure it matches. "text/xml" causes a Hash to be calculated
+     * @param expectedContentType check the returned Mime Type to ensure it matches. "text/xml" causes a Hash to be calculated
      * @return HttpGetResponse - An object containing the Stream, Hash and Headers
      * @throws Exception a multitude of Exceptions such as IOException can be thrown
      */
     @NonNull
-    HttpGetResponse get(@NonNull URI uri, @Nullable String contentType) throws Exception;
+    HttpGetResponse get(@NonNull URI uri, @Nullable String expectedContentType) throws Exception;
 
     /**
      * Performs a HTTP Head request.

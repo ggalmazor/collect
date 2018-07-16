@@ -38,7 +38,7 @@ public interface HttpInterface {
      * @throws Exception a multitude of Exceptions such as IOException can be thrown
      */
     @NonNull
-    HttpGetResponse getHttpInputStream(@NonNull URI uri, @Nullable String contentType) throws Exception;
+    HttpGetResponse get(@NonNull URI uri, @Nullable String contentType) throws Exception;
 
     /**
      * Performs a HTTP Head request.

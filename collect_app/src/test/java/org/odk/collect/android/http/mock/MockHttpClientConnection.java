@@ -23,7 +23,7 @@ public class MockHttpClientConnection implements HttpInterface {
 
     @NonNull
     @Override
-    public HttpGetResponse getHttpInputStream(@NonNull URI uri, @Nullable String contentType) throws Exception {
+    public HttpGetResponse get(@NonNull URI uri, @Nullable String contentType) throws Exception {
         if (getHttpShouldReturnNull) {
             return null;
         }

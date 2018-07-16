@@ -168,7 +168,7 @@ public class CollectServerClient {
             throw new Exception("Invalid server URL (no hostname): " + downloadUrl);
         }
 
-        return httpInterface.getHttpInputStream(uri, contentType);
+        return httpInterface.get(uri, contentType);
     }
 
 

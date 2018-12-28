@@ -57,6 +57,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import au.com.bytecode.opencsv.CSVReader;
 import timber.log.Timber;
@@ -233,7 +235,7 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
             Timber.i("Attempting to load from: %s", formXml.getAbsolutePath());
             final long start = System.currentTimeMillis();
             fis = new FileInputStream(formXml);
-            FormDef formDefFromXml = XFormUtils.getFormFromInputStream(fis);
+            FormDef formDefFromXml = XFormUtils.getFormFromInputStream(fis, getMediaPath(formPath));
             if (formDefFromXml == null) {
                 errorMsg = "Error reading XForm file";
             } else {
@@ -252,6 +254,18 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
             IOUtils.closeQuietly(fis);
         }
         return null;
+    }
+
+    private static String getMediaPath(String formFilename) {
+        String regexString = "(.*)\\/(.*)\\.xml";
+        Matcher m = Pattern.compile(regexString).matcher(formFilename);
+        if (m.matches()) {
+            String path = m.group(1);
+            String fileWithoutExt = m.group(2);
+            return String.format("%s/%s-media", path, fileWithoutExt);
+        }
+        throw new IllegalArgumentException(String.format("Form filename %s is not in expected format %s",
+                formFilename, regexString));
     }
 
     private void processItemSets(File formMediaDir) {

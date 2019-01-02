@@ -196,6 +196,8 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
 
         // Set jr://... to point to /sdcard/odk/forms/filename-media/
         ReferenceManager.instance().addSessionRootTranslator(
+                new RootTranslator("jr://file/", "jr://file/forms/" + formFileName + "-media/"));
+        ReferenceManager.instance().addSessionRootTranslator(
                 new RootTranslator("jr://images/", "jr://file/forms/" + formFileName + "-media/"));
         ReferenceManager.instance().addSessionRootTranslator(
                 new RootTranslator("jr://image/", "jr://file/forms/" + formFileName + "-media/"));
@@ -235,7 +237,17 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
             Timber.i("Attempting to load from: %s", formXml.getAbsolutePath());
             final long start = System.currentTimeMillis();
             fis = new FileInputStream(formXml);
-            FormDef formDefFromXml = XFormUtils.getFormFromInputStream(fis, getMediaPath(formPath));
+            // This should get moved to the Application Class
+            if (ReferenceManager.instance().getFactories().length == 0) {
+              // this is /sdcard/odk
+              ReferenceManager.instance().addReferenceFactory(new FileReferenceFactory(Collect.ODK_ROOT));
+            }
+
+            String formName = getFormName(formPath);
+            // Set jr://... to point to /sdcard/odk/forms/filename-media/
+            ReferenceManager.instance().addSessionRootTranslator(
+                new RootTranslator("jr://file/", "jr://file/forms/" + formName + "-media/"));
+            FormDef formDefFromXml = XFormUtils.getFormFromInputStream(fis);
             if (formDefFromXml == null) {
                 errorMsg = "Error reading XForm file";
             } else {
@@ -256,14 +268,11 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
         return null;
     }
 
-    private static String getMediaPath(String formFilename) {
-        String regexString = "(.*)\\/(.*)\\.xml";
+    private static String getFormName(String formFilename) {
+        String regexString = ".*/(.*)\\.xml";
         Matcher m = Pattern.compile(regexString).matcher(formFilename);
-        if (m.matches()) {
-            String path = m.group(1);
-            String fileWithoutExt = m.group(2);
-            return String.format("%s/%s-media", path, fileWithoutExt);
-        }
+        if (m.matches())
+            return m.group(1);
         throw new IllegalArgumentException(String.format("Form filename %s is not in expected format %s",
                 formFilename, regexString));
     }

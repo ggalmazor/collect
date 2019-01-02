@@ -26,4 +26,8 @@ public class FileReferenceFactory extends PrefixedRootFactory {
         return new FileReference(localRoot, terminal);
     }
 
+    @Override
+    public boolean needsToDerive(String URI) {
+        return true;
+    }
 }

@@ -134,8 +134,7 @@ public class AutoSendWorker extends Worker {
                 return Result.FAILURE;
             }
         } else {
-            uploader = new InstanceServerUploader(new HttpClientConnection(),
-                    new WebCredentialsUtils(), new HashMap<>());
+            uploader = new InstanceServerUploader(new HttpClientConnection(), new WebCredentialsUtils());
             deviceId = new PropertyManager(Collect.getInstance().getApplicationContext())
                     .getSingularProperty(PropertyManager.withUri(PropertyManager.PROPMGR_DEVICE_ID));
         }

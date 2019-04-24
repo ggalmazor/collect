@@ -26,7 +26,6 @@ import org.odk.collect.android.upload.UploadAuthRequestedException;
 import org.odk.collect.android.upload.UploadException;
 import org.odk.collect.android.utilities.WebCredentialsUtils;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -57,7 +56,7 @@ public class InstanceServerUploaderTask extends InstanceUploaderTask {
     protected Outcome doInBackground(Long... instanceIdsToUpload) {
         Outcome outcome = new Outcome();
 
-        InstanceServerUploader uploader = new InstanceServerUploader(httpInterface, webCredentialsUtils, new HashMap<>());
+        InstanceServerUploader uploader = new InstanceServerUploader(httpInterface, webCredentialsUtils);
         List<Instance> instancesToUpload = uploader.getInstancesFromIds(instanceIdsToUpload);
 
         String deviceId = new PropertyManager(Collect.getInstance().getApplicationContext())
@@ -92,7 +91,7 @@ public class InstanceServerUploaderTask extends InstanceUploaderTask {
                         e.getDisplayMessage());
             }
         }
-        
+
         return outcome;
     }
 
